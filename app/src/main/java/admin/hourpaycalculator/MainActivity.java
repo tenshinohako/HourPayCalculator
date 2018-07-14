@@ -1,9 +1,10 @@
 package admin.hourpaycalculator;
 
-
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -57,6 +58,14 @@ public class MainActivity extends AppCompatActivity {
         // Do something in response to button
         TimePickerDialogFragment timePicker = new TimePickerDialogFragment(rm, false);
         timePicker.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    public void configCompany(View view){
+        Intent intent = new Intent(this, CompanyConfigActivity.class);
+        //EditText editText = (EditText) findViewById(R.id.editText);
+        //String message = editText.getText().toString();
+        //intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
     }
 
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HourPayCalculator</string>
+    <string name="button_configCompany">バイト先編集</string>
 </resources>

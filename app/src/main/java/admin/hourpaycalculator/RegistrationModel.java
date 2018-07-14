@@ -3,6 +3,7 @@ package admin.hourpaycalculator;
 import android.widget.TextView;
 
 public class RegistrationModel {
+
     private int year;
     private int month;
     private int date;
@@ -10,26 +11,28 @@ public class RegistrationModel {
     private int startMinute;
     private int endHour;
     private int endMinute;
-    TextView textView;
-    TextView textView3;
-    TextView textView4;
+    private TextView textView;
+    private TextView textView3;
+    private TextView textView4;
 
     RegistrationModel(TextView textView, TextView textView3,  TextView textView4, int year, int month, int date){
+
         this.year = year;
         this.month = month;
         this.date = date;
         this.textView = textView;
         this.textView3 = textView3;
         this.textView4 = textView4;
+
     }
 
     public void setStartTime(){
-        String strHM = String.format("%02d", getStartHour()) + ":" + String.format("%02d", getStartMinute());
+        String strHM = String.format("%02d", startHour) + ":" + String.format("%02d", startMinute);
         textView3.setText(strHM);
     }
 
     public void setEndTime(){
-        String strHM = String.format("%02d", getEndHour()) + ":" + String.format("%02d", getEndMinute());
+        String strHM = String.format("%02d", endHour) + ":" + String.format("%02d", endMinute);
         textView4.setText(strHM);
     }
 
@@ -49,6 +52,7 @@ public class RegistrationModel {
         this.endMinute = minute;
     }
 
+    /*
     public int getStartHour(){
         return startHour;
     }
@@ -64,9 +68,10 @@ public class RegistrationModel {
     public int getEndMinute(){
         return endMinute;
     }
+    */
 
     public void setYMD(){
-        String strYMD = getYear() + "年" + getMonth() + "月" + getDate() + "日";
+        String strYMD = year + "年" + month + "月" + date + "日";
         textView.setText(strYMD);
     }
 
@@ -82,6 +87,7 @@ public class RegistrationModel {
         this.date = date;
     }
 
+    /*
     public int getYear(){
         return year;
     }
@@ -93,4 +99,5 @@ public class RegistrationModel {
     public int getDate(){
         return date;
     }
+    */
 }

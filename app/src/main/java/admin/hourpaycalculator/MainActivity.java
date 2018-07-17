@@ -38,18 +38,13 @@ public class MainActivity extends AppCompatActivity {
         mDbHelper = new MyDbHelper(getApplicationContext());
         SQLiteDatabase reader = mDbHelper.getReadableDatabase();
         SQLiteDatabase writer = mDbHelper.getWritableDatabase();
-
-
+        
         /*
         ContentValues values = new ContentValues();
         values.put(MyTable.COLUMN_NAME_INT_COL, 910);
         values.put(MyTable.COLUMN_NAME_STR_COL, "TBK");
         writer.insert(MyTable.TABLE_NAME, null, values);
         */
-
-
-
-        ArrayList<String> companyOption = new ArrayList<String>();
 
         String[] projection = { // SELECT する列
                 MyTable._ID,
@@ -58,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
         };
         //String selection = MyTable.COLUMN_NAME_INT_COL + " = ?"; // WHERE 句
         //String[] selectionArgs = { "123" };
-
-
         String sortOrder = MyTable.COLUMN_NAME_STR_COL + " DESC"; // ORDER 句
         Cursor cursor = reader.query(
                 MyTable.TABLE_NAME, // The table to query
@@ -74,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 null
         );
 
+        /*
         String[] FROM2 = { // SELECT する列
                 MyTable._ID,
                 //MyTable.COLUMN_NAME_INT_COL,
@@ -81,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         };
         MatrixCursor c = new MatrixCursor(FROM2);
         c.addRow(new String[] {"1", "TBK" });
-
+        */
 
         /*
         while(cursor.moveToNext()) {
@@ -89,11 +83,7 @@ public class MainActivity extends AppCompatActivity {
             String str = cursor.getString(cursor.getColumnIndexOrThrow(MyTable.COLUMN_NAME_STR_COL));
             //int pay = cursor.getInt(cursor.getColumnIndexOrThrow(MyTable.COLUMN_NAME_INT_COL));
             Log.d(TAG, "id: " + String.valueOf(id) + ", str: " + str);
-            companyOption.add(str);
         }*/
-        //cursor.close();
-
-
 
         //Adapterを作成します。
         String[] from = {MyTable.COLUMN_NAME_STR_COL};
@@ -105,23 +95,29 @@ public class MainActivity extends AppCompatActivity {
         //スピナーにadapterを設定します。
         Spinner spinner  = (Spinner)this.findViewById(R.id.spinner);
         spinner.setAdapter(adapter);
+        //spinner.setFocusable(false);
         //スピナーのアイテムが選択された時に呼び出されるコールバックリスナーを登録します
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView parent, View view, int position, long id) {
+                /*Spinner sp = (Spinner) findViewById(R.id.spinner);
+                if(!sp.isFocusable()){
+                    sp.setFocusable(true);
+                    return;
+                }*/
                 Spinner spinner = (Spinner) parent;
                 Cursor cursor = (Cursor)spinner.getSelectedItem();
                 String companyName = cursor.getString(cursor.getColumnIndex(MyTable.COLUMN_NAME_STR_COL));
+                /*
                 Toast.makeText(MainActivity.this,
                         companyName,
                         Toast.LENGTH_LONG).show();
+                */
+                TextView spinnerText = (TextView)findViewById(R.id.text);
+                spinnerText.setText(companyName);
             }
             public void onNothingSelected(AdapterView parent) {
             }
         });
-
-        cursor.close();
-
-
 
         /*
         // INSERT

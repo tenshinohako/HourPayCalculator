@@ -12,8 +12,7 @@
         style="?android:attr/spinnerDropDownItemStyle"
         android:layout_width="wrap_content"
         android:layout_height="72sp"
-        android:textSize="36sp">
-    </TextView>
+        android:textSize="24sp"></TextView>
 
 
 </LinearLayout>

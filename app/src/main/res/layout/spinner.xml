@@ -9,11 +9,12 @@
     <TextView
         android:id="@+id/text"
         style="?android:attr/spinnerItemStyle"
-        android:singleLine="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:ellipsize="marquee" >
-    </TextView>
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:hint="@string/SpinnerPrompt"
+        android:singleLine="true"
+        android:textSize="24sp"></TextView>
 
 </LinearLayout>

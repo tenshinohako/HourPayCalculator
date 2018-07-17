@@ -1,6 +1,5 @@
 package admin.hourpaycalculator;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -10,16 +9,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 
 import static admin.hourpaycalculator.MyDbContract.MyTable;
 
@@ -38,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         mDbHelper = new MyDbHelper(getApplicationContext());
         SQLiteDatabase reader = mDbHelper.getReadableDatabase();
         SQLiteDatabase writer = mDbHelper.getWritableDatabase();
-        
+
         /*
         ContentValues values = new ContentValues();
         values.put(MyTable.COLUMN_NAME_INT_COL, 910);
@@ -53,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         };
         //String selection = MyTable.COLUMN_NAME_INT_COL + " = ?"; // WHERE 句
         //String[] selectionArgs = { "123" };
-        String sortOrder = MyTable.COLUMN_NAME_STR_COL + " DESC"; // ORDER 句
+        //String sortOrder = MyTable.COLUMN_NAME_STR_COL + " DESC"; // ORDER 句
         Cursor cursor = reader.query(
                 MyTable.TABLE_NAME, // The table to query
                 projection,         // The columns to return
@@ -167,8 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 updateSelection,
                 updateSelectionArgs);
         */
-
-
+        
         //時刻表示するコードを追加
         Calendar cal = Calendar.getInstance();       //カレンダーを取得
 
@@ -227,5 +221,4 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
-
 }

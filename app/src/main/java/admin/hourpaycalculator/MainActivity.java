@@ -78,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
             String str = cursor.getString(cursor.getColumnIndexOrThrow(MyTable.COLUMN_NAME_STR_COL));
             //int pay = cursor.getInt(cursor.getColumnIndexOrThrow(MyTable.COLUMN_NAME_INT_COL));
             Log.d(TAG, "id: " + String.valueOf(id) + ", str: " + str);
-        }*/
+        }
+        */
 
         //Adapterを作成します。
         String[] from = {MyTable.COLUMN_NAME_STR_COL};
@@ -94,14 +95,17 @@ public class MainActivity extends AppCompatActivity {
         //スピナーのアイテムが選択された時に呼び出されるコールバックリスナーを登録します
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView parent, View view, int position, long id) {
-                /*Spinner sp = (Spinner) findViewById(R.id.spinner);
+                /*
+                Spinner sp = (Spinner) findViewById(R.id.spinner);
                 if(!sp.isFocusable()){
                     sp.setFocusable(true);
                     return;
-                }*/
+                }
+                */
                 Spinner spinner = (Spinner) parent;
                 Cursor cursor = (Cursor)spinner.getSelectedItem();
                 String companyName = cursor.getString(cursor.getColumnIndex(MyTable.COLUMN_NAME_STR_COL));
+                int companyId = cursor.getInt(cursor.getColumnIndex(MyTable._ID));
                 /*
                 Toast.makeText(MainActivity.this,
                         companyName,
@@ -109,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 */
                 TextView spinnerText = (TextView)findViewById(R.id.text);
                 spinnerText.setText(companyName);
+                rm.setCompanyId(companyId);
             }
             public void onNothingSelected(AdapterView parent) {
             }
@@ -162,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                 updateSelection,
                 updateSelectionArgs);
         */
-        
+
         //時刻表示するコードを追加
         Calendar cal = Calendar.getInstance();       //カレンダーを取得
 

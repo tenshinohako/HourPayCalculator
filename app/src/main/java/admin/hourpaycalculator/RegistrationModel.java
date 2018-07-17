@@ -14,6 +14,7 @@ public class RegistrationModel {
     private TextView textView;
     private TextView textView3;
     private TextView textView4;
+    private int companyId;
 
     RegistrationModel(TextView textView, TextView textView3,  TextView textView4, int year, int month, int date){
 
@@ -23,6 +24,10 @@ public class RegistrationModel {
         this.textView = textView;
         this.textView3 = textView3;
         this.textView4 = textView4;
+    }
+
+    public void setCompanyId(int id){
+        this.companyId = id;
     }
 
     public void setStartTime(){

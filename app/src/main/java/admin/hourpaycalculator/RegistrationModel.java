@@ -23,7 +23,6 @@ public class RegistrationModel {
         this.textView = textView;
         this.textView3 = textView3;
         this.textView4 = textView4;
-
     }
 
     public void setStartTime(){

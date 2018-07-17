@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">HourPayCalculator</string>
     <string name="button_configCompany">バイト先編集</string>
+    <string name="SpinnerPrompt">選択してください</string>
 </resources>

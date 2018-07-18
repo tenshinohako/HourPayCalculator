@@ -1,5 +1,6 @@
 package admin.hourpaycalculator;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -16,23 +17,25 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-import static admin.hourpaycalculator.MyDbContract.MyTable;
+import static admin.hourpaycalculator.MyDbContract.CompanyTable;
+import static admin.hourpaycalculator.MyDbContract.WorkRecordTable;
 
 public class MainActivity extends AppCompatActivity {
     RegistrationModel rm;
 
     private static final String TAG = "MainActivity";
     // DB を操作するためのインスタンス
-    private MyDbHelper mDbHelper = null;
+    private CompanyDbHelper cDbHelper = null;
+    private WorkRecordDbHelper wrDbHelper = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDbHelper = new MyDbHelper(getApplicationContext());
-        SQLiteDatabase reader = mDbHelper.getReadableDatabase();
-        SQLiteDatabase writer = mDbHelper.getWritableDatabase();
+        cDbHelper = new CompanyDbHelper(getApplicationContext());
+        SQLiteDatabase reader = cDbHelper.getReadableDatabase();
+        SQLiteDatabase writer = cDbHelper.getWritableDatabase();
 
         /*
         ContentValues values = new ContentValues();
@@ -42,15 +45,15 @@ public class MainActivity extends AppCompatActivity {
         */
 
         String[] projection = { // SELECT する列
-                MyTable._ID,
+                CompanyTable._ID,
                 //MyTable.COLUMN_NAME_INT_COL,
-                MyTable.COLUMN_NAME_STR_COL
+                CompanyTable.COLUMN_NAME_COMPANY_NAME
         };
         //String selection = MyTable.COLUMN_NAME_INT_COL + " = ?"; // WHERE 句
         //String[] selectionArgs = { "123" };
         //String sortOrder = MyTable.COLUMN_NAME_STR_COL + " DESC"; // ORDER 句
         Cursor cursor = reader.query(
-                MyTable.TABLE_NAME, // The table to query
+                CompanyTable.TABLE_NAME, // The table to query
                 projection,         // The columns to return
                 //selection,          // The columns for the WHERE clause
                 null,
@@ -82,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         */
 
         //Adapterを作成します。
-        String[] from = {MyTable.COLUMN_NAME_STR_COL};
+        String[] from = {CompanyTable.COLUMN_NAME_COMPANY_NAME};
         int[] to = {R.id.company};
         SimpleCursorAdapter adapter =
                 new SimpleCursorAdapter(this,R.layout.spinner,cursor,from,to);
@@ -104,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
                 */
                 Spinner spinner = (Spinner) parent;
                 Cursor cursor = (Cursor)spinner.getSelectedItem();
-                String companyName = cursor.getString(cursor.getColumnIndex(MyTable.COLUMN_NAME_STR_COL));
-                int companyId = cursor.getInt(cursor.getColumnIndex(MyTable._ID));
+                String companyName = cursor.getString(cursor.getColumnIndex(CompanyTable.COLUMN_NAME_COMPANY_NAME));
+                int companyId = cursor.getInt(cursor.getColumnIndex(CompanyTable._ID));
                 /*
                 Toast.makeText(MainActivity.this,
                         companyName,
@@ -219,10 +222,36 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void registration(View view){
+        wrDbHelper = new WorkRecordDbHelper(getApplicationContext());
+        //SQLiteDatabase reader = wrDbHelper.getReadableDatabase();
+        SQLiteDatabase writer = wrDbHelper.getWritableDatabase();
+
+        // INSERT
+        ContentValues values = new ContentValues();
+        values.put(WorkRecordTable.COLUMN_NAME_COMPANY_ID, rm.getCompanyId());
+        values.put(WorkRecordTable.COLUMN_NAME_YEAR, rm.getYear());
+        values.put(WorkRecordTable.COLUMN_NAME_MONTH, rm.getMonth());
+        values.put(WorkRecordTable.COLUMN_NAME_DATE, rm.getDate());
+        values.put(WorkRecordTable.COLUMN_NAME_START_HOUR, rm.getStartHour());
+        values.put(WorkRecordTable.COLUMN_NAME_START_MINUTE, rm.getStartMinute());
+        values.put(WorkRecordTable.COLUMN_NAME_END_HOUR, rm.getEndHour());
+        values.put(WorkRecordTable.COLUMN_NAME_END_MINUTE, rm.getEndMinute());
+        writer.insert(WorkRecordTable.TABLE_NAME, null, values);
+
+        Intent intent = new Intent(this, RegistrationActivity.class);
+        startActivity(intent);
+    }
+
+    public void viewRecord(View view){
+        Intent intent = new Intent(this, ViewRecordActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onDestroy() {
-        if(mDbHelper != null) {
-            mDbHelper.close(); // コネクションを閉じます。
+        if(cDbHelper != null) {
+            cDbHelper.close(); // コネクションを閉じます。
         }
         super.onDestroy();
     }

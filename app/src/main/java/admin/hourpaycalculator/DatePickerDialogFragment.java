@@ -1,5 +1,6 @@
 package admin.hourpaycalculator;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 
+@SuppressLint("ValidFragment")
 public class DatePickerDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     RegistrationModel rm;
 

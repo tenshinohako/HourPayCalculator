@@ -1,5 +1,6 @@
 package admin.hourpaycalculator;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+@SuppressLint("ValidFragment")
 public class TimePickerDialogFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
     RegistrationModel rm;
     boolean isStart;

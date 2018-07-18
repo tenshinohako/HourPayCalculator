@@ -30,6 +30,10 @@ public class RegistrationModel {
         this.companyId = id;
     }
 
+    public int getCompanyId(){
+        return companyId;
+    }
+
     public void setStartTime(){
         String strHM = String.format("%02d", startHour) + ":" + String.format("%02d", startMinute);
         textView3.setText(strHM);
@@ -56,7 +60,6 @@ public class RegistrationModel {
         this.endMinute = minute;
     }
 
-    /*
     public int getStartHour(){
         return startHour;
     }
@@ -72,7 +75,6 @@ public class RegistrationModel {
     public int getEndMinute(){
         return endMinute;
     }
-    */
 
     public void setYMD(){
         String strYMD = year + "年" + month + "月" + date + "日";
@@ -91,7 +93,6 @@ public class RegistrationModel {
         this.date = date;
     }
 
-    /*
     public int getYear(){
         return year;
     }
@@ -103,5 +104,4 @@ public class RegistrationModel {
     public int getDate(){
         return date;
     }
-    */
 }

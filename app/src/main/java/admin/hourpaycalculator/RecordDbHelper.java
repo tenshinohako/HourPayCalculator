@@ -4,31 +4,32 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static admin.hourpaycalculator.MyDbContract.WorkRecordTable;
+import static admin.hourpaycalculator.MyDbContract.RecordTable;
 
-public class WorkRecordDbHelper extends SQLiteOpenHelper {
+public class RecordDbHelper extends SQLiteOpenHelper {
+
     // スキーマに変更があれば VERSION をインクリメントします。
     public static final int DATABASE_VERSION = 1;
 
     // SQLite ファイル名を指定します。
-    public static final String DATABASE_NAME = "WorkRecordDb.db";
+    public static final String DATABASE_NAME = "RecordDb.db";
 
     // SQLite ファイルが存在しない場合や VERSION が変更された際に実行する SQL を定義します。
     private static final String SQL_CREATE_TABLE =
-            "CREATE TABLE " + WorkRecordTable.TABLE_NAME + " (" +
-                    WorkRecordTable._ID + " INTEGER PRIMARY KEY," +
-                    WorkRecordTable.COLUMN_NAME_YEAR + " INTEGER," +
-                    WorkRecordTable.COLUMN_NAME_MONTH + " INTEGER," +
-                    WorkRecordTable.COLUMN_NAME_DATE + " INTEGER," +
-                    WorkRecordTable.COLUMN_NAME_START_HOUR + " INTEGER," +
-                    WorkRecordTable.COLUMN_NAME_START_MINUTE + " INTEGER," +
-                    WorkRecordTable.COLUMN_NAME_END_HOUR + " INTEGER," +
-                    WorkRecordTable.COLUMN_NAME_END_MINUTE + " INTEGER," +
-                    WorkRecordTable.COLUMN_NAME_COMPANY_ID + " INTEGER)";
+            "CREATE TABLE " + MyDbContract.CompanyTable.TABLE_NAME + " (" +
+                    RecordTable._ID + " INTEGER PRIMARY KEY," +
+                    RecordTable.COLUMN_NAME_YEAR + " INTEGER," +
+                    RecordTable.COLUMN_NAME_MONTH + " INTEGER," +
+                    RecordTable.COLUMN_NAME_DAY_OF_MONTH + " INTEGER," +
+                    RecordTable.COLUMN_NAME_START_HOUR + " INTEGER," +
+                    RecordTable.COLUMN_NAME_START_MINUTE + " INTEGER," +
+                    RecordTable.COLUMN_NAME_END_HOUR + " INTEGER," +
+                    RecordTable.COLUMN_NAME_END_MINUTE + " INTEGER," +
+                    RecordTable.COLUMN_NAME_COMPANY_ID + " INTEGER)";
 
-    private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + WorkRecordTable.TABLE_NAME;
+    private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + MyDbContract.CompanyTable.TABLE_NAME;
 
-    public WorkRecordDbHelper(Context context) {
+    public RecordDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -49,4 +50,5 @@ public class WorkRecordDbHelper extends SQLiteOpenHelper {
         // VERSION が下がった場合に実行されます。本サンプルでは単純に DROP して CREATE し直します。
         onUpgrade(db, oldVersion, newVersion);
     }
+
 }

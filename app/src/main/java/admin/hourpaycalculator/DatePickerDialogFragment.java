@@ -11,10 +11,10 @@ import java.util.Calendar;
 
 @SuppressLint("ValidFragment")
 public class DatePickerDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-    RegistrationModel rm;
+    MainActivity ma;
 
-    DatePickerDialogFragment(RegistrationModel rm){
-        this.rm = rm;
+    DatePickerDialogFragment(MainActivity mainActivity){
+        this.ma = mainActivity;
     }
 
     @Override
@@ -29,11 +29,8 @@ public class DatePickerDialogFragment extends DialogFragment implements DatePick
         return datePickerDialog;
     }
 
-    public void onDateSet(DatePicker view, int year, int month, int date) {
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         //日付が選択されたときの処理
-        rm.setYear(year);
-        rm.setMonth(month + 1);
-        rm.setDate(date);
-        rm.setYMD();
+        ma.setDate(year, month + 1, dayOfMonth);
     }
 }

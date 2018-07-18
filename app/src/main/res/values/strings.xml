@@ -4,4 +4,12 @@
     <string name="SpinnerPrompt">選択してください</string>
     <string name="register">登録</string>
     <string name="view_record">記録を見る</string>
+
+    <string name="name_selectsheet_listview">DailyRecord</string>
+
+    <string name="text_record_head">日々の記録</string>
+
+    <string name="text_record_date">日付</string>
+    <string name="text_record_start_time">開始時刻</string>
+    <string name="text_record_end_time">終了時刻</string>
 </resources>

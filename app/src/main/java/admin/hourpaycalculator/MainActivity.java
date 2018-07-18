@@ -1,6 +1,7 @@
 package admin.hourpaycalculator;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -9,29 +10,99 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 
 import static admin.hourpaycalculator.MyDbContract.CompanyTable;
-import static admin.hourpaycalculator.MyDbContract.WorkRecordTable;
 
 public class MainActivity extends AppCompatActivity {
+
+    private TextView dateTV;
+    private TextView startTimeTV;
+    private TextView endTimeTV;
+    private Button registerBt;
+    private Button showBt;
+    private DateFormat dateFormat;
+    private DateFormat timeFormat;
+    private Calendar date = Calendar.getInstance();
+    private Calendar startTime = Calendar.getInstance();
+    private Calendar endTime = Calendar.getInstance();
+    private int companyId;
+    private Intent intent;
+
+
     RegistrationModel rm;
 
     private static final String TAG = "MainActivity";
     // DB を操作するためのインスタンス
     private CompanyDbHelper cDbHelper = null;
-    private WorkRecordDbHelper wrDbHelper = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dateTV = (TextView)findViewById(R.id.textView);
+        startTimeTV = (TextView)findViewById(R.id.textView3);
+        endTimeTV = (TextView)findViewById(R.id.textView4);
+
+        dateFormat = DateFormat.getDateInstance();
+        Calendar now = Calendar.getInstance();
+        dateTV.setText(dateFormat.format(now.getTime()));
+
+
+        startTime.set(Calendar.HOUR_OF_DAY, 0);
+        startTime.set(Calendar.MINUTE, 0);
+        startTimeTV.setText("00:00");
+
+        endTime = now;
+        timeFormat = DateFormat.getTimeInstance();
+        endTimeTV.setText(timeFormat.format(endTime.getTime()));
+
+        registerBt = (Button) findViewById(R.id.button2);
+        showBt = (Button) findViewById(R.id.button3);
+
+        intent = new Intent(MainActivity.this, SelectSheetListView.class);
+
+        // 登録ボタン押下時処理
+        registerBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // キーボードを非表示
+                InputMethodManager inputMethodManager =
+                        (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                // DBに登録
+                saveRecord();
+
+            }
+        });
+
+        // 表示ボタン押下時処理
+        showBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (intent != null) {
+                    startActivity(intent);      // 各画面へ遷移
+                } else {
+                    Toast.makeText(MainActivity.this, "ラジオボタンが選択されていません。", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+
+
 
         cDbHelper = new CompanyDbHelper(getApplicationContext());
         SQLiteDatabase reader = cDbHelper.getReadableDatabase();
@@ -108,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 Spinner spinner = (Spinner) parent;
                 Cursor cursor = (Cursor)spinner.getSelectedItem();
                 String companyName = cursor.getString(cursor.getColumnIndex(CompanyTable.COLUMN_NAME_COMPANY_NAME));
-                int companyId = cursor.getInt(cursor.getColumnIndex(CompanyTable._ID));
+                companyId = cursor.getInt(cursor.getColumnIndex(CompanyTable._ID));
                 /*
                 Toast.makeText(MainActivity.this,
                         companyName,
@@ -180,7 +251,8 @@ public class MainActivity extends AppCompatActivity {
         int hour = cal.get(Calendar.HOUR_OF_DAY);         //時を取得
         int minute = cal.get(Calendar.MINUTE);    //分を取得
         //int iSecond = cal.get(Calendar.SECOND);    //分を取得
-        String strYMD = year + "年" + month+ "月" + date + "日";
+        //String strYMD = year + "年" + month+ "月" + date + "日";
+        String strYMD = cal.toString();
         TextView textView = (TextView)findViewById(R.id.textView);
         textView.setText(strYMD);
 
@@ -196,21 +268,49 @@ public class MainActivity extends AppCompatActivity {
         //ここまで
     }
 
+    public void saveRecord(){
+        if(startTime.compareTo(endTime) > 0){
+            Toast.makeText(MainActivity.this, "時刻を確認してください", Toast.LENGTH_SHORT).show();
+        }else {
+            // DBへの登録処理
+            RecordDbAdapter dbAdapter = new RecordDbAdapter(this);
+            dbAdapter.openDB();                                         // DBの読み書き
+            dbAdapter.saveDB(date, startTime, endTime, companyId);   // DBに登録
+            dbAdapter.closeDB();                                        // DBを閉じる
+        }
+    }
+
+    public void setDate(int year, int month, int dayOfMonth){
+        date.set(Calendar.YEAR, year);
+        date.set(Calendar.MONTH, month);
+        date.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+    }
+
+    public void setStartTime(int hour, int minute){
+        startTime.set(Calendar.HOUR_OF_DAY, hour);
+        startTime.set(Calendar.MINUTE, minute);
+    }
+
+    public void setEndTime(int hour, int minute){
+        endTime.set(Calendar.HOUR_OF_DAY, hour);
+        endTime.set(Calendar.MINUTE, minute);
+    }
+
     public void selectDate(View view) {
         // Do something in response to button
-        DatePickerDialogFragment datePicker = new DatePickerDialogFragment(rm);
+        DatePickerDialogFragment datePicker = new DatePickerDialogFragment(this);
         datePicker.show(getSupportFragmentManager(), "datePicker");
     }
 
     public void setStartTime(View view) {
         // Do something in response to button
-        TimePickerDialogFragment timePicker = new TimePickerDialogFragment(rm, true);
+        TimePickerDialogFragment timePicker = new TimePickerDialogFragment(this, true);
         timePicker.show(getSupportFragmentManager(), "timePicker");
     }
 
     public void setEndTime(View view) {
         // Do something in response to button
-        TimePickerDialogFragment timePicker = new TimePickerDialogFragment(rm, false);
+        TimePickerDialogFragment timePicker = new TimePickerDialogFragment(this, false);
         timePicker.show(getSupportFragmentManager(), "timePicker");
     }
 
@@ -222,30 +322,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void registration(View view){
-        wrDbHelper = new WorkRecordDbHelper(getApplicationContext());
-        //SQLiteDatabase reader = wrDbHelper.getReadableDatabase();
-        SQLiteDatabase writer = wrDbHelper.getWritableDatabase();
+    public void registerRecord(View view){
 
-        // INSERT
-        ContentValues values = new ContentValues();
-        values.put(WorkRecordTable.COLUMN_NAME_COMPANY_ID, rm.getCompanyId());
-        values.put(WorkRecordTable.COLUMN_NAME_YEAR, rm.getYear());
-        values.put(WorkRecordTable.COLUMN_NAME_MONTH, rm.getMonth());
-        values.put(WorkRecordTable.COLUMN_NAME_DATE, rm.getDate());
-        values.put(WorkRecordTable.COLUMN_NAME_START_HOUR, rm.getStartHour());
-        values.put(WorkRecordTable.COLUMN_NAME_START_MINUTE, rm.getStartMinute());
-        values.put(WorkRecordTable.COLUMN_NAME_END_HOUR, rm.getEndHour());
-        values.put(WorkRecordTable.COLUMN_NAME_END_MINUTE, rm.getEndMinute());
-        writer.insert(WorkRecordTable.TABLE_NAME, null, values);
-
-        Intent intent = new Intent(this, RegistrationActivity.class);
-        startActivity(intent);
     }
 
-    public void viewRecord(View view){
-        Intent intent = new Intent(this, ViewRecordActivity.class);
-        startActivity(intent);
+    public void showRecord(View view){
+
     }
 
     @Override

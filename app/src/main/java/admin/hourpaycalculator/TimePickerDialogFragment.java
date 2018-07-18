@@ -11,11 +11,11 @@ import java.util.Calendar;
 
 @SuppressLint("ValidFragment")
 public class TimePickerDialogFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
-    RegistrationModel rm;
+    MainActivity ma;
     boolean isStart;
 
-    TimePickerDialogFragment(RegistrationModel rm, boolean isStart){
-        this.rm = rm;
+    TimePickerDialogFragment(MainActivity mainActivity, boolean isStart){
+        this.ma = mainActivity;
         this.isStart = isStart;
     }
 
@@ -33,13 +33,9 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         //時刻が選択されたときの処理
         if(isStart){
-            rm.setStartHour(hourOfDay);
-            rm.setStartMinute(minute);
-            rm.setStartTime();
+            ma.setStartTime(hourOfDay, minute);
         }else{
-            rm.setEndHour(hourOfDay);
-            rm.setEndMinute(minute);
-            rm.setEndTime();
+            ma.setEndTime(hourOfDay, minute);
         }
     }
 

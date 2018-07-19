@@ -63,7 +63,7 @@ public class RecordDbAdapter {
         db.beginTransaction();          // トランザクション開始
 
         int year = date.get(Calendar.YEAR);
-        int month = date.get(Calendar.MONTH) + 1;
+        int month = date.get(Calendar.MONTH);
         int dayOfMonth = date.get(Calendar.DAY_OF_MONTH);
         int startHour = startTime.get(Calendar.HOUR_OF_DAY);
         int startMinute = startTime.get(Calendar.MINUTE);
@@ -111,7 +111,7 @@ public class RecordDbAdapter {
         // 第4引数：第3引数のWHERE句において?を使用した場合に使用
         // 第5引数：集計条件(GROUP BY句)
         // 第6引数：選択条件(HAVING句)
-        // 第7引数：ソート条件(ODERBY句)
+        // 第7引数：ソート条件(ORDERBY句)
         return db.query(RecordTable.TABLE_NAME, columns, null, null, null, null, null);
     }
 

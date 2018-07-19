@@ -16,7 +16,7 @@ public class RecordDbHelper extends SQLiteOpenHelper {
 
     // SQLite ファイルが存在しない場合や VERSION が変更された際に実行する SQL を定義します。
     private static final String SQL_CREATE_TABLE =
-            "CREATE TABLE " + MyDbContract.CompanyTable.TABLE_NAME + " (" +
+            "CREATE TABLE " + RecordTable.TABLE_NAME + " (" +
                     RecordTable._ID + " INTEGER PRIMARY KEY," +
                     RecordTable.COLUMN_NAME_YEAR + " INTEGER," +
                     RecordTable.COLUMN_NAME_MONTH + " INTEGER," +

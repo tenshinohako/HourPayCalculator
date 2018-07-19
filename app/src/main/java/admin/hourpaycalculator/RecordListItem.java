@@ -3,6 +3,7 @@ package admin.hourpaycalculator;
 import android.util.Log;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -20,6 +21,8 @@ public class RecordListItem {
     protected int endHour;
     protected int endMinute;
     protected int companyId;
+    private DateFormat dateFormat; //= DateFormat.getDateInstance();
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm");
 
     /**
      * MyListItem()
@@ -51,7 +54,7 @@ public class RecordListItem {
         date.set(Calendar.YEAR, year);
         date.set(Calendar.MONTH, month);
         date.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        DateFormat dateFormat = DateFormat.getDateInstance();
+        dateFormat = DateFormat.getDateInstance();
 
         return dateFormat.format(date.getTime());
     }
@@ -60,7 +63,7 @@ public class RecordListItem {
         Calendar startTime = Calendar.getInstance();
         startTime.set(Calendar.HOUR_OF_DAY, startHour);
         startTime.set(Calendar.MINUTE, startMinute);
-        DateFormat timeFormat = DateFormat.getTimeInstance();
+        timeFormat = new SimpleDateFormat("kk:mm");
 
         return timeFormat.format(startTime.getTime());
     }
@@ -69,7 +72,7 @@ public class RecordListItem {
         Calendar endTime = Calendar.getInstance();
         endTime.set(Calendar.HOUR_OF_DAY, endHour);
         endTime.set(Calendar.MINUTE, endMinute);
-        DateFormat timeFormat = DateFormat.getTimeInstance();
+        timeFormat = new SimpleDateFormat("kk:mm");
 
         return timeFormat.format(endTime.getTime());
     }

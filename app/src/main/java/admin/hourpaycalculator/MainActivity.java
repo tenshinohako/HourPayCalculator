@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import static admin.hourpaycalculator.MyDbContract.CompanyTable;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private Button registerBt;
     private Button showBt;
     private DateFormat dateFormat;
-    private DateFormat timeFormat;
+    private SimpleDateFormat timeFormat; //= new SimpleDateFormat("kk:mm");
     private Calendar date = Calendar.getInstance();
     private Calendar startTime = Calendar.getInstance();
     private Calendar endTime = Calendar.getInstance();
@@ -59,12 +60,12 @@ public class MainActivity extends AppCompatActivity {
         dateTV.setText(dateFormat.format(now.getTime()));
 
 
+        timeFormat = new SimpleDateFormat("kk:mm");
         startTime.set(Calendar.HOUR_OF_DAY, 0);
         startTime.set(Calendar.MINUTE, 0);
-        startTimeTV.setText("00:00");
+        startTimeTV.setText(timeFormat.format(startTime.getTime()));
 
         endTime = now;
-        timeFormat = DateFormat.getTimeInstance();
         endTimeTV.setText(timeFormat.format(endTime.getTime()));
 
         registerBt = (Button) findViewById(R.id.button2);
@@ -243,6 +244,7 @@ public class MainActivity extends AppCompatActivity {
         */
 
         //時刻表示するコードを追加
+        /*
         Calendar cal = Calendar.getInstance();       //カレンダーを取得
 
         int year = cal.get(Calendar.YEAR);         //年を取得
@@ -265,6 +267,7 @@ public class MainActivity extends AppCompatActivity {
         textView4.setText(strEndHM);
 
         rm = new RegistrationModel(textView, textView3, textView4, year, month, date);
+        */
         //ここまで
     }
 
@@ -289,11 +292,15 @@ public class MainActivity extends AppCompatActivity {
     public void setStartTime(int hour, int minute){
         startTime.set(Calendar.HOUR_OF_DAY, hour);
         startTime.set(Calendar.MINUTE, minute);
+
+        startTimeTV.setText(timeFormat.format(startTime.getTime()));
     }
 
     public void setEndTime(int hour, int minute){
         endTime.set(Calendar.HOUR_OF_DAY, hour);
         endTime.set(Calendar.MINUTE, minute);
+
+        endTimeTV.setText(timeFormat.format(endTime.getTime()));
     }
 
     public void selectDate(View view) {

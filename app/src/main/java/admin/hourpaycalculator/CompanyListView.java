@@ -1,5 +1,6 @@
 package admin.hourpaycalculator;
 
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,14 +19,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static admin.hourpaycalculator.MyDbContract.RecordTable;
+import static admin.hourpaycalculator.MyDbContract.CompanyTable;
 
-public class SelectSheetListView extends AppCompatActivity {
-    private RecordDbAdapter dbAdapter;
-    private RecordBaseAdapter recordBaseAdapter;
-    private List<RecordListItem> items;
-    private ListView mListView03;
-    protected RecordListItem recordListItem;
+public class CompanyListView extends AppCompatActivity {
+    private CompanyDbAdapter dbAdapter;
+    private CompanyBaseAdapter companyBaseAdapter;
+    private List<CompanyListItem> items;
+    private ListView cListView04;
+    protected CompanyListItem companyListItem;
 
     // 参照するDBのカラム：ID,品名,産地,個数,単価の全部なのでnullを指定
     private String[] columns = null;
@@ -33,30 +34,30 @@ public class SelectSheetListView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.select_sheet_listview);
+        setContentView(R.layout.select_company_listview);
 
         // DBAdapterのコンストラクタ呼び出し
-        dbAdapter = new RecordDbAdapter(this);
+        dbAdapter = new CompanyDbAdapter(this);
 
         // itemsのArrayList生成
         items = new ArrayList<>();
 
         // MyBaseAdapterのコンストラクタ呼び出し(myBaseAdapterのオブジェクト生成)
-        recordBaseAdapter = new RecordBaseAdapter(this, items);
+        companyBaseAdapter = new CompanyBaseAdapter(this, items);
 
         // ListViewの結び付け
-        mListView03 = (ListView) findViewById(R.id.listView03);
+        cListView04 = (ListView) findViewById(R.id.listView04);
 
         loadMyList();   // DBを読み込む＆更新する処理
 
         // 行を長押しした時の処理
-        mListView03.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        cListView04.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 
                 // アラートダイアログ表示
-                AlertDialog.Builder builder = new AlertDialog.Builder(SelectSheetListView.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CompanyListView.this);
                 builder.setTitle("削除");
                 builder.setMessage("削除しますか？");
                 // OKの時の処理
@@ -65,8 +66,8 @@ public class SelectSheetListView extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         // IDを取得する
-                        recordListItem = items.get(position);
-                        int listId = recordListItem.getId();
+                        companyListItem = items.get(position);
+                        int listId = companyListItem.getId();
 
                         dbAdapter.openDB();     // DBの読み込み(読み書きの方)
                         dbAdapter.selectDelete(String.valueOf(listId));     // DBから取得したIDが入っているデータを削除する
@@ -107,16 +108,10 @@ public class SelectSheetListView extends AppCompatActivity {
         if (c.moveToFirst()) {
             do {
                 // MyListItemのコンストラクタ呼び出し(myListItemのオブジェクト生成)
-                recordListItem = new RecordListItem(
-                        c.getInt(c.getColumnIndexOrThrow(RecordTable._ID)),
-                        c.getInt(c.getColumnIndexOrThrow(RecordTable.COLUMN_NAME_YEAR)),
-                        c.getInt(c.getColumnIndexOrThrow(RecordTable.COLUMN_NAME_MONTH)),
-                        c.getInt(c.getColumnIndexOrThrow(RecordTable.COLUMN_NAME_DAY_OF_MONTH)),
-                        c.getInt(c.getColumnIndexOrThrow(RecordTable.COLUMN_NAME_START_HOUR)),
-                        c.getInt(c.getColumnIndexOrThrow(RecordTable.COLUMN_NAME_START_MINUTE)),
-                        c.getInt(c.getColumnIndexOrThrow(RecordTable.COLUMN_NAME_END_HOUR)),
-                        c.getInt(c.getColumnIndexOrThrow(RecordTable.COLUMN_NAME_END_MINUTE)),
-                        c.getInt(c.getColumnIndexOrThrow(RecordTable.COLUMN_NAME_COMPANY_ID)));
+                companyListItem = new CompanyListItem(
+                        c.getInt(c.getColumnIndexOrThrow(CompanyTable._ID)),
+                        c.getString(c.getColumnIndexOrThrow(CompanyTable.COLUMN_NAME_COMPANY_NAME)),
+                        c.getInt(c.getColumnIndexOrThrow(CompanyTable.COLUMN_NAME_HOUR_PAY)));
 
                 /*
                 Log.d("取得したCursor(ID):", String.valueOf(c.getInt(0)));
@@ -126,14 +121,14 @@ public class SelectSheetListView extends AppCompatActivity {
                 Log.d("取得したCursor(単価):", c.getString(4));
                 */
 
-                items.add(recordListItem);          // 取得した要素をitemsに追加
+                items.add(companyListItem);          // 取得した要素をitemsに追加
 
             } while (c.moveToNext());
         }
         c.close();
         dbAdapter.closeDB();                    // DBを閉じる
-        mListView03.setAdapter(recordBaseAdapter);  // ListViewにmyBaseAdapterをセット
-        recordBaseAdapter.notifyDataSetChanged();   // Viewの更新
+        cListView04.setAdapter(companyBaseAdapter);  // ListViewにmyBaseAdapterをセット
+        companyBaseAdapter.notifyDataSetChanged();   // Viewの更新
 
     }
 
@@ -141,21 +136,19 @@ public class SelectSheetListView extends AppCompatActivity {
      * BaseAdapterを継承したクラス
      * MyBaseAdapter
      */
-    public class RecordBaseAdapter extends BaseAdapter {
+    public class CompanyBaseAdapter extends BaseAdapter {
 
         private Context context;
-        private List<RecordListItem> items;
+        private List<CompanyListItem> items;
 
         // 毎回findViewByIdをする事なく、高速化が出来るようするholderクラス
         private class ViewHolder {
             TextView companyName;
-            TextView date;
-            TextView startTime;
-            TextView endTime;
+            TextView hourPay;
         }
 
         // コンストラクタの生成
-        public RecordBaseAdapter(Context context, List<RecordListItem> items) {
+        public CompanyBaseAdapter(Context context, List<CompanyListItem> items) {
             this.context = context;
             this.items = items;
         }
@@ -186,25 +179,21 @@ public class SelectSheetListView extends AppCompatActivity {
             ViewHolder holder;
 
             // データを取得
-            recordListItem = items.get(position);
+            companyListItem = items.get(position);
 
 
             if (view == null) {
                 LayoutInflater inflater =
                         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.row_sheet_listview, parent, false);
+                view = inflater.inflate(R.layout.row_company_listview, parent, false);
 
-                TextView companyName = (TextView) view.findViewById(R.id.id_record_company_name);      // 品名のTextView
-                TextView date = (TextView) view.findViewById(R.id.id_record_date);        // 産地のTextView
-                TextView startTime = (TextView) view.findViewById(R.id.id_record_start_time);        // 個数のTextView
-                TextView endTime = (TextView) view.findViewById(R.id.id_record_end_time);          // 単価のTextView
+                TextView companyName = (TextView) view.findViewById(R.id.id_company_name);      // 品名のTextView
+                TextView hourPay = (TextView) view.findViewById(R.id.id_company_hourpay);      // 品名のTextView
 
                 // holderにviewを持たせておく
                 holder = new ViewHolder();
                 holder.companyName = companyName;
-                holder.date = date;
-                holder.startTime = startTime;
-                holder.endTime = endTime;
+                holder.hourPay = hourPay;
                 view.setTag(holder);
 
             } else {
@@ -213,10 +202,8 @@ public class SelectSheetListView extends AppCompatActivity {
             }
 
             // 取得した各データを各TextViewにセット
-            holder.companyName.setText("TBK");
-            holder.date.setText(recordListItem.getDateString());
-            holder.startTime.setText(recordListItem.getStartTimeString());
-            holder.endTime.setText(recordListItem.getEndTimeString());
+            holder.companyName.setText(companyListItem.getCompanyNameg());
+            holder.hourPay.setText(companyListItem.getHourPay());
 
             return view;
 

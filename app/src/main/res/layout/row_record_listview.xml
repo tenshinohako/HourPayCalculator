@@ -21,25 +21,25 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-    <!-- タイトル：日付 -->
-    <TextView
-        android:id="@+id/id_record_date_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.2"
-        android:text="@string/text_record_date"
-        android:textSize="14sp" />
+        <!-- タイトル：日付 -->
+        <TextView
+            android:id="@+id/id_record_date_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="@string/text_record_date"
+            android:textSize="14sp" />
 
-    <!-- データ表示用：日付 -->
-    <TextView
-        android:id="@+id/id_record_date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.4"
-        android:textColor="#000000"
-        android:textSize="14sp" />
+        <!-- データ表示用：日付 -->
+        <TextView
+            android:id="@+id/id_record_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:textColor="#000000"
+            android:textSize="14sp" />
 
-    </LinearLayout>>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,6 +47,8 @@
         android:orientation="horizontal">
 
         <!-- タイトル：開始時刻 -->
+
+        <!-- データ表示用：開始時刻 -->
         <TextView
             android:id="@+id/id_record_start_time_title"
             android:layout_width="0dp"
@@ -55,7 +57,6 @@
             android:text="@string/text_record_start_time"
             android:textSize="14sp" />
 
-        <!-- データ表示用：開始時刻 -->
         <TextView
             android:id="@+id/id_record_start_time"
             android:layout_width="0dp"
@@ -68,7 +69,7 @@
         <TextView
             android:id="@+id/id_record_end_time_title"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.2"
             android:text="@string/text_record_end_time"
             android:textSize="14sp" />

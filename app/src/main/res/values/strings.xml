@@ -12,4 +12,13 @@
     <string name="text_record_date">日付</string>
     <string name="text_record_start_time">開始時刻</string>
     <string name="text_record_end_time">終了時刻</string>
+
+
+    <string name="name_company_listview">CompanyConfig</string>
+
+    <string name="text_company_head">バイト先一覧</string>
+
+    <string name="text_company_hourpay">時給</string>
+
+
 </resources>

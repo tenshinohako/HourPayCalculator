@@ -31,16 +31,18 @@ public class MainActivity extends AppCompatActivity {
     private TextView endTimeTV;
     private Button registerBt;
     private Button showBt;
+    private Button companyConfigBt;
     private DateFormat dateFormat;
     private SimpleDateFormat timeFormat; //= new SimpleDateFormat("kk:mm");
     private Calendar date = Calendar.getInstance();
     private Calendar startTime = Calendar.getInstance();
     private Calendar endTime = Calendar.getInstance();
     private int companyId;
-    private Intent intent;
+    private Intent intentShow;
+    private Intent intentCompanyConfig;
 
 
-    RegistrationModel rm;
+    //RegistrationModel rm;
 
     private static final String TAG = "MainActivity";
     // DB を操作するためのインスタンス
@@ -70,8 +72,10 @@ public class MainActivity extends AppCompatActivity {
 
         registerBt = (Button) findViewById(R.id.button2);
         showBt = (Button) findViewById(R.id.button3);
+        companyConfigBt = (Button) findViewById(R.id.button);
 
-        intent = new Intent(MainActivity.this, SelectSheetListView.class);
+        intentShow = new Intent(MainActivity.this, RecordListView.class);
+        intentCompanyConfig = new Intent(MainActivity.this, CompanyListView.class);
 
         // 登録ボタン押下時処理
         registerBt.setOnClickListener(new View.OnClickListener() {
@@ -93,8 +97,21 @@ public class MainActivity extends AppCompatActivity {
         showBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (intent != null) {
-                    startActivity(intent);      // 各画面へ遷移
+                if (intentShow != null) {
+                    startActivity(intentShow);      // 各画面へ遷移
+                } else {
+                    Toast.makeText(MainActivity.this, "ラジオボタンが選択されていません。", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+
+        companyConfigBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (intentCompanyConfig != null) {
+                    startActivity(intentCompanyConfig);      // 各画面へ遷移
                 } else {
                     Toast.makeText(MainActivity.this, "ラジオボタンが選択されていません。", Toast.LENGTH_SHORT).show();
                 }
@@ -105,9 +122,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         cDbHelper = new CompanyDbHelper(getApplicationContext());
         SQLiteDatabase reader = cDbHelper.getReadableDatabase();
         SQLiteDatabase writer = cDbHelper.getWritableDatabase();
+
 
         /*
         ContentValues values = new ContentValues();
@@ -115,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         values.put(MyTable.COLUMN_NAME_STR_COL, "TBK");
         writer.insert(MyTable.TABLE_NAME, null, values);
         */
+
 
         String[] projection = { // SELECT する列
                 CompanyTable._ID,
@@ -124,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         //String selection = MyTable.COLUMN_NAME_INT_COL + " = ?"; // WHERE 句
         //String[] selectionArgs = { "123" };
         //String sortOrder = MyTable.COLUMN_NAME_STR_COL + " DESC"; // ORDER 句
+
         Cursor cursor = reader.query(
                 CompanyTable.TABLE_NAME, // The table to query
                 projection,         // The columns to return
@@ -136,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 ///sortOrder           // The sort order
                 null
         );
+
 
         /*
         String[] FROM2 = { // SELECT する列
@@ -157,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
         */
 
         //Adapterを作成します。
+
         String[] from = {CompanyTable.COLUMN_NAME_COMPANY_NAME};
         int[] to = {R.id.company};
         SimpleCursorAdapter adapter =
@@ -170,29 +193,30 @@ public class MainActivity extends AppCompatActivity {
         //スピナーのアイテムが選択された時に呼び出されるコールバックリスナーを登録します
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView parent, View view, int position, long id) {
-                /*
+
                 Spinner sp = (Spinner) findViewById(R.id.spinner);
                 if(!sp.isFocusable()){
                     sp.setFocusable(true);
                     return;
                 }
-                */
+
                 Spinner spinner = (Spinner) parent;
                 Cursor cursor = (Cursor)spinner.getSelectedItem();
                 String companyName = cursor.getString(cursor.getColumnIndex(CompanyTable.COLUMN_NAME_COMPANY_NAME));
                 companyId = cursor.getInt(cursor.getColumnIndex(CompanyTable._ID));
-                /*
+
                 Toast.makeText(MainActivity.this,
                         companyName,
                         Toast.LENGTH_LONG).show();
-                */
+
                 TextView spinnerText = (TextView)findViewById(R.id.text);
                 spinnerText.setText(companyName);
-                rm.setCompanyId(companyId);
+                //rm.setCompanyId(companyId);
             }
             public void onNothingSelected(AdapterView parent) {
             }
         });
+
 
         /*
         // INSERT

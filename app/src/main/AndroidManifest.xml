@@ -24,9 +24,21 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".SelectSheetListView"
-            android:label="@string/name_selectsheet_listview" />
-
+            android:name=".RecordListView"
+            android:label="@string/name_selectsheet_listview"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".CompanyListView"
+            android:label="@string/name_company_listview"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
 
     </application>
 

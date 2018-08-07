@@ -4,8 +4,10 @@ package admin.hourpaycalculator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +33,8 @@ public class CompanyListView extends AppCompatActivity {
 
     // 参照するDBのカラム：ID,品名,産地,個数,単価の全部なのでnullを指定
     private String[] columns = null;
+
+    CompanyListView(){}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +100,7 @@ public class CompanyListView extends AppCompatActivity {
      * DBを読み込む＆更新する処理
      * loadMyList()
      */
-    private void loadMyList() {
+    public void loadMyList() {
 
         //ArrayAdapterに対してListViewのリスト(items)の更新
         items.clear();
@@ -130,6 +135,23 @@ public class CompanyListView extends AppCompatActivity {
         cListView04.setAdapter(companyBaseAdapter);  // ListViewにmyBaseAdapterをセット
         companyBaseAdapter.notifyDataSetChanged();   // Viewの更新
 
+    }
+
+    public void configureCompany(View view){
+        // Do something in response to button
+
+        Intent intent = new Intent(this, CompanyConfigActivity.class);
+
+        //String message = editText.getText().toString();
+        //intent.putExtra("ListView", this);
+
+        startActivityForResult(intent, 1);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        loadMyList();
     }
 
     /**
@@ -203,7 +225,7 @@ public class CompanyListView extends AppCompatActivity {
 
             // 取得した各データを各TextViewにセット
             holder.companyName.setText(companyListItem.getCompanyNameg());
-            holder.hourPay.setText(companyListItem.getHourPay());
+            holder.hourPay.setText(String.valueOf(companyListItem.getHourPay()));
 
             return view;
 

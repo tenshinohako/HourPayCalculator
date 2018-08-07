@@ -213,6 +213,7 @@ public class RecordListView extends AppCompatActivity {
             }
 
             // 取得した各データを各TextViewにセット
+            CompanyDbAdapter dbAdapter = new CompanyDbAdapter(this);
             holder.companyName.setText("TBK");
             holder.date.setText(recordListItem.getDateString());
             holder.startTime.setText(recordListItem.getStartTimeString());

@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Toast.makeText(MainActivity.this,
                         companyName,
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
 
                 TextView spinnerText = (TextView)findViewById(R.id.text);
                 spinnerText.setText(companyName);
@@ -295,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
         //ここまで
     }
 
+
     public void saveRecord(){
         if(startTime.compareTo(endTime) > 0){
             Toast.makeText(MainActivity.this, "時刻を確認してください", Toast.LENGTH_SHORT).show();
@@ -344,6 +345,15 @@ public class MainActivity extends AppCompatActivity {
         TimePickerDialogFragment timePicker = new TimePickerDialogFragment(this, false);
         timePicker.show(getSupportFragmentManager(), "timePicker");
     }
+
+
+    /*
+    public void configureCompany(View view){
+        // Do something in response to button
+
+        Intent intent = new Intent(this, CompanyConfigActivity.class);
+        startActivity(intent);
+    }*/
 
     public void configCompany(View view){
         Intent intent = new Intent(this, CompanyConfigActivity.class);

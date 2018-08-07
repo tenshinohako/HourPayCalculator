@@ -18,10 +18,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".CompanyConfigActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".CompanyListView">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".CompanyListView" />
         </activity>
         <activity
             android:name=".RecordListView"

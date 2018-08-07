@@ -19,6 +19,9 @@
     <string name="text_company_head">バイト先一覧</string>
 
     <string name="text_company_hourpay">時給</string>
+    <string name="button_addCompany">バイト先追加</string>
+    <string name="company_name">企業名</string>
+    <string name="hour_pay">時給</string>
 
 
 </resources>

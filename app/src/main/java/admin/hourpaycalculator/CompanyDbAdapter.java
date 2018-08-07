@@ -116,6 +116,12 @@ public class CompanyDbAdapter {
         return db.query(CompanyTable.TABLE_NAME, columns, column + " like ?", name, null, null, null);
     }
 
+    public Cursor nameById(int id){
+        String columns[] = new String[]{CompanyTable.COLUMN_NAME_COMPANY_NAME};
+        return db.query(CompanyTable.TABLE_NAME, columns, CompanyTable._ID + " like ?", new String[]{"" + id}, null, null, null);
+    }
+
+
     /**
      * DBのレコードを全削除
      * allDelete()

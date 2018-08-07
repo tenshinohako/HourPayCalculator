@@ -19,10 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static admin.hourpaycalculator.MyDbContract.RecordTable;
+import static admin.hourpaycalculator.MyDbContract.CompanyTable;
 
 public class RecordListView extends AppCompatActivity {
     private RecordDbAdapter dbAdapter;
     private RecordBaseAdapter recordBaseAdapter;
+    private CompanyDbAdapter cdbAdapter = new CompanyDbAdapter(this);
     private List<RecordListItem> items;
     private ListView rListView03;
     protected RecordListItem recordListItem;
@@ -213,8 +215,12 @@ public class RecordListView extends AppCompatActivity {
             }
 
             // 取得した各データを各TextViewにセット
-            CompanyDbAdapter dbAdapter = new CompanyDbAdapter(this);
-            holder.companyName.setText("TBK");
+            cdbAdapter.openDB();     // DBの読み込み(読み書きの方)
+            Cursor c = cdbAdapter.nameById(recordListItem.getCompanyId());
+            String name = c.getString(c.getColumnIndexOrThrow(CompanyTable.COLUMN_NAME_COMPANY_NAME));
+            c.close();
+            cdbAdapter.closeDB();    // DBを閉じる
+            holder.companyName.setText(name);
             holder.date.setText(recordListItem.getDateString());
             holder.startTime.setText(recordListItem.getStartTimeString());
             holder.endTime.setText(recordListItem.getEndTimeString());

@@ -215,12 +215,12 @@ public class RecordListView extends AppCompatActivity {
             }
 
             // 取得した各データを各TextViewにセット
-            cdbAdapter.openDB();     // DBの読み込み(読み書きの方)
-            Cursor c = cdbAdapter.nameById(recordListItem.getCompanyId());
-            String name = c.getString(c.getColumnIndexOrThrow(CompanyTable.COLUMN_NAME_COMPANY_NAME));
-            c.close();
-            cdbAdapter.closeDB();    // DBを閉じる
-            holder.companyName.setText(name);
+            //cdbAdapter.openDB();     // DBの読み込み(読み書きの方)
+            //Cursor c = cdbAdapter.nameById(recordListItem.getCompanyId());
+            //String name = c.getString(c.getColumnIndexOrThrow(CompanyTable.COLUMN_NAME_COMPANY_NAME));
+            //c.close();
+            //cdbAdapter.closeDB();    // DBを閉じる
+            holder.companyName.setText("company");
             holder.date.setText(recordListItem.getDateString());
             holder.startTime.setText(recordListItem.getStartTimeString());
             holder.endTime.setText(recordListItem.getEndTimeString());
